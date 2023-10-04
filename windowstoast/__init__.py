@@ -169,7 +169,7 @@ class Toast:
         elif source != "":
             ET.SubElement(self.toast,'audio',{'src':source})
 
-    def add_progress(self, status, title, value, value_label):
+    def add_progress(self, status: str, title: str, value: str, value_label: str):
         ET.SubElement(self.binding,'progress',{'status':status, 'title':title, 'value':value, 'valueStringOverride':value_label})
 
     def add_context_menu(self, content='Context Menu', arguments='Context Menu Argument', activationType='protocol'):
@@ -199,7 +199,7 @@ class Toast:
 
         SHOW = '''[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)'''
 
-        toast = START  + TAG + APP_ID + ET.tostring(self.toast).decode('utf-8') + END + POPUP + SHOW
+        toast = START  + TAG + APP_ID + ET.tostring(self.toast, encoding='unicode') + END + POPUP + SHOW
         
         NotificationDispatcher.add_toast(toast)
 

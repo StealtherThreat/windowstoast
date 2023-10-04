@@ -59,7 +59,7 @@ t.add_progress(status, title, value, value_label)
 
 #status = Text below the progress bar indicatiing its current state. Ex- 'Downloading...', 'Receiving...', etc.
 #title = Title about the progress bar.
-#value = A value between 0 and 10 for the progress.
+#value = A value between 0 and 1 for the progress.
 #value_label = A text below the progress bar showing the current progress to the user. Ex- '26/100 Completed!', '54%', etc.
 ```
 ![image](https://user-images.githubusercontent.com/49994038/128417618-17b352e9-056b-4e55-8f45-a271e7b34b6a.png)
