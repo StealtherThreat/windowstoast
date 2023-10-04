@@ -1,5 +1,14 @@
 import subprocess
-import xml.etree.ElementTree as ET, os, time, threading, winreg
+import xml.etree.ElementTree as ET, os, time, threading
+
+try:
+    import winreg
+except ImportError:
+    try:
+        import wslwinreg as winreg
+    except ImportError:
+        print('Could not import winreg. This likely means you are running in WSL, CygWin or MSYS2.'
+              ' If this is the case, please install `wslwinreg` from PyPI.')
 
 def create_protocol(protocol_uri, command_target):
     try:
@@ -77,7 +86,7 @@ class NotificationDispatcher:
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        cls.__Dispatcher = subprocess.Popen(['powershell','-windowstyle','hidden','-ExecutionPolicy','ByPass',command], startupinfo=startupinfo)
+        cls.__Dispatcher = subprocess.Popen(['powershell.exe','-windowstyle','hidden','-ExecutionPolicy','ByPass',command], startupinfo=startupinfo)
         cls.__timeout()
         cls.__show_toast()
         return 'Started'
