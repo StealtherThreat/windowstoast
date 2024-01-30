@@ -1,5 +1,14 @@
 import subprocess
-import xml.etree.ElementTree as ET, os, time, threading, winreg
+import xml.etree.ElementTree as ET, os, time, threading
+
+try:
+    import winreg
+except ImportError:
+    try:
+        import wslwinreg as winreg
+    except ImportError:
+        print('Could not import winreg. This likely means you are running in WSL, CygWin or MSYS2.'
+              ' If this is the case, please install `wslwinreg` from PyPI.')
 
 def create_protocol(protocol_uri, command_target):
     try:
@@ -77,7 +86,7 @@ class NotificationDispatcher:
         if os.name == 'nt':
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        cls.__Dispatcher = subprocess.Popen(['powershell','-windowstyle','hidden','-ExecutionPolicy','ByPass',command], startupinfo=startupinfo)
+        cls.__Dispatcher = subprocess.Popen(['powershell.exe','-windowstyle','hidden','-ExecutionPolicy','ByPass',command], startupinfo=startupinfo)
         cls.__timeout()
         cls.__show_toast()
         return 'Started'
@@ -160,7 +169,7 @@ class Toast:
         elif source != "":
             ET.SubElement(self.toast,'audio',{'src':source})
 
-    def add_progress(self, status, title, value, value_label):
+    def add_progress(self, status: str, title: str, value: str, value_label: str):
         ET.SubElement(self.binding,'progress',{'status':status, 'title':title, 'value':value, 'valueStringOverride':value_label})
 
     def add_context_menu(self, content='Context Menu', arguments='Context Menu Argument', activationType='protocol'):
@@ -190,7 +199,7 @@ class Toast:
 
         SHOW = '''[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)'''
 
-        toast = START  + TAG + APP_ID + ET.tostring(self.toast).decode('utf-8') + END + POPUP + SHOW
+        toast = START  + TAG + APP_ID + ET.tostring(self.toast, encoding='unicode') + END + POPUP + SHOW
         
         NotificationDispatcher.add_toast(toast)
 
