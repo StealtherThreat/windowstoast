@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="windowstoast",
-    version="0.0.3",
+    version="0.0.4",
     author="Tushar Goyal",
     author_email="StealtherThreat@outlook.com",
-    description="Toast notifications for Windows 10",
+    description="Toast notifications for Windows 11",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/StealtherThreat/windowstoast",
